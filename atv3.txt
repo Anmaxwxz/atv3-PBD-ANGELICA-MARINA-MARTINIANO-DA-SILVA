@@ -1,0 +1,72 @@
+QUESTAO 1
+
+/*01) Considerando a DATABASE disponível em 
+https://github.com/DIOGOBRODRIGUES/DBP_3MA2021_1/blob/master/aula5.sql
+Desenvolva uma função queinsere um novo aluno na tabela “Aluno” e retorne o nome do aluno Inserido.*/
+
+DELIMITER //
+CREATE FUNCTION fn_adicionar_aluno (
+    cod_curso INTEGER,
+    dat_nasc DATE, 
+    tot_cred INTEGER,
+    mgp DOUBLE,
+    nom_alun VARCHAR (60), 
+    email VARCHAR (30)) 
+RETURNS VARCHAR (60)
+DETERMINISTIC
+BEGIN
+    insert into aluno(cod_curso,dat_nasc,tot_cred,mgp,nom_alun,email)
+    values (cod_curso,dat_nasc,tot_cred,mgp,nom_alun,email);
+RETURN nom_alun ;
+END// 
+DELIMITER ; 
+
+/exemplo de utilização da função*/
+select fn_adicionar_aluno (null, '2000-7-1', 100, 7.77, 'Uni Versitaria', 'universitaria@gmail.com')
+as 'nom_alun' ;
+
+
+QUESTAO 2
+
+/*02) Desenvolva um procedimento em MYSQL que imprima a sequênciade 5 números utilizando a 
+estrutura de repetição WHILE, saída esperada abaixo.*/
+
+
+DELIMITER// 
+CREATE PROCEDURE sqc_num ()
+BEGIN
+    DECLARE limite INTEGER DEFAULT 5;
+    DECLARE contador INTEGER DEFAULT 1;
+    DECLARE sqc VARCHAR(60) DEFAULT '1';
+    WHILE contador<limite DO
+        SET contador = contador + 1 ;
+        SET sqc = concat(sqc, ',', contador );
+    END WHILE;
+    SELECT CONCAT(sqc,',') AS 'sqc' ;
+END// 
+DELIMITER ;
+CALL sqc_num();
+
+
+QUESTAO 3
+
+
+/*03)Faça um procedimento em MYSQL que use a estrutura de repetição REPEAT para concatenar 
+números de 1 a 9 (função concatenar em MySQL “CONCAT”);*/
+
+DILIMITER //
+CREATE PROCEDURE sqc_numero_nove ()
+BEGIN
+    DECLARE contador integer default 1;
+    DECLARE limite integer default 9;
+    DECLARE result varchar(60) default '1';
+    REPEAT 
+        SET contador = contador + 1 ;
+        SET result = CONCAT(result, ',', contador );
+    UNTIL contador >= limite
+    END REPEAT;
+    SELECT CONCAT(result,',') AS 'result' ;
+END //
+DELIMITER ;
+
+CALL sqc_numero_nove();
